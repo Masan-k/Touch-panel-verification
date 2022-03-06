@@ -1,58 +1,124 @@
 //window.onload = function () {
 document.addEventListener("DOMContentLoaded", startup);
-let ctx;
+let ctx1;
 let mapImage;
 let baseX = 0;
 let baseY = 0;
+let startX, startY;
+let disX
+let disY
+//pinch
+let pinchImage;
+let pinchCtx;
+
+// <div id="target1"></div>
+var divElement = document.getElementById("pinchDiv") ;
+
+// <img id="target2">
+var imgElement = document.getElementById("pinchImage") ;
+
+// base
+var beseDistance = 0 ;
+var baseImageWidth = 0 ;
+var baseImageHeight = 0 ;
+
+// timeout id
+var timeoutId ;
+
+// touchmove
+divElement.ontouchmove = function ( event ) {
+	event.preventDefault() ;
+
+	var touches = event.changedTouches ;
+
+	if ( touches.length > 1 ) {
+		var x1 = touches[0].pageX ;
+		var y1 = touches[0].pageY ;
+
+		var x2 = touches[1].pageX ;
+		var y2 = touches[1].pageY ;
+
+		var distance = Math.sqrt( Math.pow( x2-x1, 2 ) + Math.pow( y2-y1, 2 ) ) ;
+
+		clearTimeout( timeoutId ) ;
+
+		if ( beseDistance && baseImageWidth && baseImageHeight ) {
+			var scale = distance / beseDistance ;
+
+			if ( scale && scale != Infinity ) {
+				imgElement.width = baseImageWidth * scale ;
+				imgElement.height = baseImageHeight * scale ;
+			}
+
+			timeoutId = setTimeout( function () {
+				beseDistance = 0 ;
+				baseImageWidth = 0 ;
+				baseImageHeight = 0 ;
+			}, 100 ) ;
+
+		} else {
+			beseDistance = distance ;
+			baseImageWidth = imgElement.width ;
+			baseImageHeight = imgElement.height ;
+
+		}
+	}
+}
 function startup(){
-  console.log('call DOM contentloaded');
+  //------
+  //pinch 
+  //------
+  let pinchEl = document.getElementById("pinchCanvas");
+  pinchCtx = pinchEl.getContext('2d');
+  pinchMapImage = new Image();
+  pinchMapImage.src = "europe.svg";
 
-  var el = document.getElementById("mainCanvas");
-  el.addEventListener("touchstart", handleStart, false);
-  el.addEventListener("touchend", handleEnd, false);
-  el.addEventListener("touchcancel", handleCancel, false);
-  el.addEventListener("touchmove", handleMove, false);
+  pinchMapImage.onload = function() {
+    pinchCtx.drawImage(pinchMapImage, baseX, baseY);
+  }
 
-  var canvas = document.getElementById('mainCanvas');
-  if ( ! canvas || ! canvas.getContext ) {
+ //--------
+ //スワイプ
+ //--------
+
+  let el = document.getElementById("mainCanvas");
+
+  el.addEventListener("touchstart",evt => {
+    console.log('call start');
+    evt.preventDefault(); 
+    startX = evt.touches[0].clientX;
+    startY = evt.touches[0].clientY;
+  } , false);
+
+  el.addEventListener("touchend", evt => {
+    baseX = baseX + disX;
+    baseY = baseY + disY;
+  }, false);
+
+  el.addEventListener("touchmove", evt => { 
+    let endX = evt.changedTouches[0].clientX;
+    let endY = evt.changedTouches[0].clientY;
+    evt.preventDefault(); 
+    disX = endX - startX;
+    disY = endY - startY;
+
+    ctx1.clearRect(0, 0, 640, 480);
+    ctx1.drawImage(mapImage, baseX + disX, baseY + disY);
+  }, false);
+  el.addEventListener("touchcancel", evt =>{console.log('cancel');}, false);
+
+  var canvas1 = document.getElementById('mainCanvas');
+  if ( ! canvas1 || ! canvas1.getContext ) {
     return false;
   }
-  ctx = canvas.getContext('2d');
+
+  ctx1 = canvas1.getContext('2d');
   mapImage = new Image();
   mapImage.src = "europe.svg";
 
   mapImage.onload = function() {
-    ctx.drawImage(mapImage, baseX, baseY);
+    ctx1.drawImage(mapImage, baseX, baseY);
   }
 } 
 
-let startX, startY;
-function clearCanvas(){
-  ctx.clearRect(0, 0, 640, 480);
-}
-function handleStart(evt){
-  console.log('call start');
-  evt.preventDefault(); 
-  startX = evt.touches[0].clientX;
-  startY = evt.touches[0].clientY;
-}
-function handleMove(evt){
-  evt.preventDefault(); 
 
-  let endX = evt.changedTouches[0].clientX;
-  let endY = evt.changedTouches[0].clientY;
-  let disX = endX - startX;
-  let disY = endY - startY;
-
-  console.log('x:y ... ' + disX + ':' + disY);
-
-  baseX = disX;
-  baseY = disY;
-
-  ctx.clearRect(0, 0, 640, 480);
-  ctx.drawImage(mapImage, baseX, baseY);
-}
-function handleEnd(evt){
-}
-function handleCancel(){
-}

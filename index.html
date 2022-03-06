@@ -13,8 +13,20 @@
 
 </head>
   <body>
-    <h1>test page</h1>
-    <canvas id="mainCanvas" width="640" height="480"></canvas>
-    <input type="button" id="clear" value="消す" onclick="clearCanvas();">
+    <h1>JavaScriptでのスマホのタッチイベント制御検証</h1>
+    <h2>概要</h2>
+    <p>スマホで背景画像のみ縮小・拡大し、背景画像以外は拡大縮小させない。</p>
+    <a href="https://github.com/Masan-k/touchTest">コード保存先(Git Hub)</a>
+    <h2>1.スワイプ時に画像を移動する。</h2>
+      <canvas id="mainCanvas" width="640" height="480"></canvas>
+    <h2>2.ピンチアウト・ピンチインで画像を拡大・縮小する。</h2>
+      <div id='pinchDiv'>
+        <img id='pinchImg' src='europe.svg'>
+      </div>
+      <canvas id="pinchCanvas" width="640" height="480" style='display:none;'></canvas>
+      <a href="https://lab.syncer.jp/Web/JavaScript/Snippet/39/">参考サイト:Syncer:ピンチイン・ピンチアウトでズームする方法</a>
+<h2>3.応用</h2>
+      <p>地図の特定地点を示すマーカーと固定サイズのボタンを表示する。</p>
+      <canvas id="pinchCanvas" width="640" height="480"></canvas>
   </body>
 </html>
