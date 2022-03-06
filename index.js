@@ -33,7 +33,7 @@ function startup(){
   //------
   divElement = document.getElementById("pinchDiv") ;
   imgElement = document.getElementById("pinchImage") ;
-  divElement.ontouchmove = function ( event ) {
+  imgElement.ontouchmove = function ( event ) {
     console.log('dev ontouchmove');
 
     event.preventDefault() ;
