@@ -7,15 +7,15 @@ let baseY = 0;
 let startX, startY;
 let disX
 let disY
+//------
 //pinch
-let pinchImage;
-let pinchCtx;
+//------
 
-// <div id="target1"></div>
-var divElement = document.getElementById("pinchDiv") ;
+//let pinchImage;
+//let pinchCtx;
 
-// <img id="target2">
-var imgElement = document.getElementById("pinchImage") ;
+var divElement;
+var imgElement;
 
 // base
 var beseDistance = 0 ;
@@ -26,48 +26,51 @@ var baseImageHeight = 0 ;
 var timeoutId ;
 
 // touchmove
-divElement.ontouchmove = function ( event ) {
-	event.preventDefault() ;
 
-	var touches = event.changedTouches ;
-
-	if ( touches.length > 1 ) {
-		var x1 = touches[0].pageX ;
-		var y1 = touches[0].pageY ;
-
-		var x2 = touches[1].pageX ;
-		var y2 = touches[1].pageY ;
-
-		var distance = Math.sqrt( Math.pow( x2-x1, 2 ) + Math.pow( y2-y1, 2 ) ) ;
-
-		clearTimeout( timeoutId ) ;
-
-		if ( beseDistance && baseImageWidth && baseImageHeight ) {
-			var scale = distance / beseDistance ;
-
-			if ( scale && scale != Infinity ) {
-				imgElement.width = baseImageWidth * scale ;
-				imgElement.height = baseImageHeight * scale ;
-			}
-
-			timeoutId = setTimeout( function () {
-				beseDistance = 0 ;
-				baseImageWidth = 0 ;
-				baseImageHeight = 0 ;
-			}, 100 ) ;
-
-		} else {
-			beseDistance = distance ;
-			baseImageWidth = imgElement.width ;
-			baseImageHeight = imgElement.height ;
-
-		}
-	}
-}
 function startup(){
   //------
   //pinch 
   //------
+  divElement = document.getElementById("pinchDiv") ;
+  imgElement = document.getElementById("pinchImage") ;
+  divElement.ontouchmove = function ( event ) {
+    console.log('dev ontouchmove');
+
+    event.preventDefault() ;
+    var touches = event.changedTouches ;
+    if ( touches.length > 1 ) {
+      var x1 = touches[0].pageX ;
+      var y1 = touches[0].pageY ;
+
+      var x2 = touches[1].pageX ;
+      var y2 = touches[1].pageY ;
+
+      var distance = Math.sqrt( Math.pow( x2-x1, 2 ) + Math.pow( y2-y1, 2 ) ) ;
+
+      clearTimeout( timeoutId ) ;
+
+      if ( beseDistance && baseImageWidth && baseImageHeight ) {
+              var scale = distance / beseDistance ;
+
+              if ( scale && scale != Infinity ) {
+                      imgElement.width = baseImageWidth * scale ;
+                      imgElement.height = baseImageHeight * scale ;
+              }
+
+              timeoutId = setTimeout( function () {
+                      beseDistance = 0 ;
+                      baseImageWidth = 0 ;
+                      baseImageHeight = 0 ;
+              }, 100 ) ;
+
+      } else {
+              beseDistance = distance ;
+              baseImageWidth = imgElement.width ;
+              baseImageHeight = imgElement.height ;
+
+      }
+    }
+  }  /*
   let pinchEl = document.getElementById("pinchCanvas");
   pinchCtx = pinchEl.getContext('2d');
   pinchMapImage = new Image();
@@ -76,7 +79,7 @@ function startup(){
   pinchMapImage.onload = function() {
     pinchCtx.drawImage(pinchMapImage, baseX, baseY);
   }
-
+  */
  //--------
  //スワイプ
  //--------
