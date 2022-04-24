@@ -42,7 +42,7 @@ function startup(){
       clearTimeout(timeoutId) ;
 
       if ( beseDistance && baseImageWidth && baseImageHeight ) {
-        var scale = distance / beseDistance ;
+        var scale = distance / beseDistance;
 
         if ( scale && scale != Infinity ) {
          writeCanvas(ctx);
@@ -62,12 +62,11 @@ function startup(){
     }
   }
 }
-  canvas.ontouchmove =j
 
-  scale = 1;
-  clearCanvas(canvas,ctx);
-  writeCanvas(ctx);
-}
+  //scale = 1;
+  //clearCanvas(canvas,ctx);
+  //writeCanvas(ctx);
+//}
 
 function clickScale(){
   console.log('call click scale');
