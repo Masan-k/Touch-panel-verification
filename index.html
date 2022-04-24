@@ -16,13 +16,13 @@
     <h1>JavaScriptによるタッチデバイス制御</h1>
     <h2>概要</h2>
     <p>タッチデバイス背景画像のみ縮小・拡大することを目標に実装した成果物を掲載する。</p>
-    <p>成果物以外（実装したコードなど）は<a href="https://github.com/Masan-k/touchTest">Git HubのtouchTest</a>を参照のこと。</p>
+    <p>実装したコードなどは<a href="https://github.com/Masan-k/touchTest">Git HubのtouchTest</a>を参照のこと。</p>
     <p>動作確認は、Xperia SO-03 Android 8.0.0 Chromeで確認済み。</p>
 
-    <h2>実装1.スワイプ操作で画像を移動する。</h2>
+    <h2>実装1.画像を移動（スワイプ）</h2>
     <canvas id="mainCanvas" width="640" height="480"></canvas>
 
-    <h2>実装2.ピンチアウト・ピンチインで画像要素を拡大・縮小する。</h2>
+    <h2>実装2.画像要素を拡大・縮小(ピンチアウト・イン）</h2>
       <div id='pinchDiv'>
         <img id='pinchImage' src='europe.svg'>
       </div>
@@ -31,14 +31,14 @@
       <ul>
         <li> キャンバス上のタッチイベントで画像のサイズを変更している</li>
       </ul>
-    <h2>実装3.ピンチアウト・ピンチインでキャンバス上の図形を拡大・縮小する。</h2>
-    <h2>参考サイト</h2>
+    <h2>実装3.キャンバスに描画した図形の拡大・縮小</h2>
+    <a href="03_pinch.html">動作確認画面</a><br>実装1,2と変数・関数名が重複してしまいそうなので別画面化</p>
+
+    <h2>99.参考サイト</h2>
     <ul>
       <ol><a href="https://lab.syncer.jp/Web/JavaScript/Snippet/39/">参考サイト:Syncer:ピンチイン・ピンチアウトでズームする方法</a></ol>
     </ul>
 
-    <h2>ステップ4.</h2>
-      <p>地図の特定地点を示すマーカーと固定サイズのボタンをで表示する。</p>
 
   </body>
 </html>
