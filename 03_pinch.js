@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", startup);
 
-const rectWidth = 30;
-const rectHeight = 20;
+let rectWidth = 30;
+let rectHeight = 20;
 
 let wX = 20;
 let wY = 100;
@@ -16,21 +16,35 @@ function clearCanvas(canvas,ctx){
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-function writeCanvas(ctx){
+function writeCanvas(ctx,scale){
   ctx.fillStyle = "#000";
   ctx.fillRect(wX, wY, rectWidth * scale, rectHeight * scale);
 }
 
-function startup(){
-  var canvas = document.getElementById('mainCanvas');
-  var ctx = canvas.getContext('2d');
+let baseX = wX;
+let baseY = wY;
+let startX, startY;
+let disX
+let disY
+let isPinch;
 
+function startup(){
+  let canvas = document.getElementById('mainCanvas');
+  let ctx = canvas.getContext('2d');
+  clearCanvas(canvas, ctx);
+  writeCanvas(ctx,1)
+
+  isPinch = false;
+  //------
+  //pinch
+  //------
   canvas.ontouchmove = function(event){
 
-    event.preventDefault() ;
-    var touches = event.changedTouches ;
+    event.preventDefault();
+    var touches = event.changedTouches;
 
-    if (touches.length > 1){
+    if(touches.length > 1){
+      isPinch = true;
       var x1 = touches[0].pageX ;
       var y1 = touches[0].pageY ;
       var x2 = touches[1].pageX ;
@@ -42,47 +56,82 @@ function startup(){
       clearTimeout(timeoutId) ;
 
       if ( beseDistance && baseImageWidth && baseImageHeight ) {
-        var scale = distance / beseDistance;
+        let scale = distance / beseDistance;
 
         if ( scale && scale != Infinity ) {
-         writeCanvas(ctx);
+          clearCanvas(canvas, ctx);
+
+          rectWidth = baseImageWidth * scale;
+          rectHeight = baseImageHeight * scale;
+
+          ctx.fillStyle = "#000";
+          ctx.fillRect(wX, wY, rectWidth, rectHeight);
         }
 
         timeoutId = setTimeout( function () {
           beseDistance = 0 ;
           baseImageWidth = 0 ;
           baseImageHeight = 0 ;
-        }, 100 ) ;
+        }, 100) ;
 
       } else {
         beseDistance = distance ;
-        baseImageWidth = canvas.width ;
-        baseImageHeight = canvas.height ;
+        baseImageWidth = rectWidth ;
+        baseImageHeight = rectHeight ;
       }
     }
   }
+
+  //------
+  //swipe
+  //------
+  canvas.addEventListener("touchstart",evt => {
+    evt.preventDefault(); 
+    if(isPinch){return;}
+    console.log('[touchstart]evt.changedTouches -> ' + evt.changedTouches.length);
+    startX = evt.touches[0].clientX;
+    startY = evt.touches[0].clientY;
+  },false);
+
+  canvas.addEventListener("touchend", evt => {
+    if(isPinch){
+      isPinch = false;
+    }else{
+      console.log('[touchend]evt.changedTouches -> ' + evt.changedTouches.length);
+      baseX = baseX + disX;
+      baseY = baseY + disY;
+    }
+    }, false);
+
+  canvas.addEventListener("touchmove", evt => { 
+    if(isPinch){return;}
+    console.log('[touchmove]evt.changedTouches -> ' + evt.changedTouches.length);
+    evt.preventDefault(); 
+    let endX = evt.changedTouches[0].clientX;
+    let endY = evt.changedTouches[0].clientY;
+    disX = endX - startX;
+    disY = endY - startY;
+
+    clearCanvas(canvas, ctx);
+    wX = baseX + disX;
+    wY = baseY + disY;
+    ctx.fillStyle = "#000";
+    ctx.fillRect(wX, wY, rectWidth, rectHeight);
+
+  }, false);
+  canvas.addEventListener("touchcancel", evt =>{console.log('cancel');}, false);
 }
 
-  //scale = 1;
-  //clearCanvas(canvas,ctx);
-  //writeCanvas(ctx);
-//}
+function resetButton(){
+  let canvas = document.getElementById('mainCanvas');
+  let ctx = canvas.getContext('2d');
 
-function clickScale(){
-  console.log('call click scale');
-  var canvas = document.getElementById('mainCanvas');
-  var ctx = canvas.getContext('2d');
+  wX = 20;
+  wY = 100;
+  baseX = wX;
+  baseY = wY;
 
-  scale += 1;
-  clearCanvas(canvas,ctx);
-  writeCanvas(ctx);
-}
-
-function clickMove(){
-  wX += 10;
-  var canvas = document.getElementById('mainCanvas');
-  var ctx = canvas.getContext('2d');
-
-  clearCanvas(canvas,ctx);
-  writeCanvas(ctx);
+  clearCanvas(canvas, ctx);
+  ctx.fillStyle = "#000";
+  ctx.fillRect(wX, wY, rectWidth, rectHeight);
 }
