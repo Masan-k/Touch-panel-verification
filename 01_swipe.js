@@ -7,8 +7,8 @@ let mapImage;
 let baseX = 0;
 let baseY = 0;
 let startX, startY;
-let disX
-let disY
+let disX;
+let disY;
 
 function startup(){
   let el = document.getElementById("mainCanvas");
