@@ -1,36 +1,30 @@
-document.addEventListener("DOMContentLoaded", startup);
+document.addEventListener("DOMContentLoaded", pinch03Startup);
 
-let rectWidth = 30;
-let rectHeight = 20;
+function pinch03Startup(){
 
-let wX = 20;
-let wY = 100;
+  document.addEventListener("click",resetButton());
 
-var beseDistance=0;
-var baseImageWidth=0;
-var baseImageHeight=0;
-var timeoutId;
+  let rectWidth = 30;
+  let rectHeight = 20;
 
-function clearCanvas(canvas,ctx){
-  ctx.fillStyle = "#DDD";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-}
+  let wX = 20;
+  let wY = 100;
 
-function writeCanvas(ctx,scale){
-  ctx.fillStyle = "#000";
-  ctx.fillRect(wX, wY, rectWidth * scale, rectHeight * scale);
-}
+  var beseDistance=0;
+  var baseImageWidth=0;
+  var baseImageHeight=0;
+  var timeoutId;
 
-let baseX = wX;
-let baseY = wY;
-let startX, startY;
-let disX
-let disY
-let isPinch;
+  let baseX = wX;
+  let baseY = wY;
+  let startX, startY;
+  let disX
+  let disY
+  let isPinch;
 
-function startup(){
-  let canvas = document.getElementById('mainCanvas');
+  let canvas = document.getElementById('pinch03Canvas');
   let ctx = canvas.getContext('2d');
+
   clearCanvas(canvas, ctx);
   writeCanvas(ctx,1)
 
@@ -119,19 +113,30 @@ function startup(){
     ctx.fillRect(wX, wY, rectWidth, rectHeight);
 
   }, false);
-  canvas.addEventListener("touchcancel", evt =>{console.log('cancel');}, false);
+
+ function clearCanvas(canvas,ctx){
+    ctx.fillStyle = "#DDD";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  function writeCanvas(ctx,scale){
+    ctx.fillStyle = "#000";
+    ctx.fillRect(wX, wY, rectWidth * scale, rectHeight * scale);
+  } canvas.addEventListener("touchcancel", evt =>{console.log('cancel');}, false);
+
+ function resetButton(){
+    let canvas = document.getElementById('mainCanvas');
+    let ctx = canvas.getContext('2d');
+
+    wX = 20;
+    wY = 100;
+    baseX = wX;
+    baseY = wY;
+
+    clearCanvas(canvas, ctx);
+    ctx.fillStyle = "#000";
+    ctx.fillRect(wX, wY, rectWidth, rectHeight);
+  }
+
 }
-
-function resetButton(){
-  let canvas = document.getElementById('mainCanvas');
-  let ctx = canvas.getContext('2d');
-
-  wX = 20;
-  wY = 100;
-  baseX = wX;
-  baseY = wY;
-
-  clearCanvas(canvas, ctx);
-  ctx.fillStyle = "#000";
-  ctx.fillRect(wX, wY, rectWidth, rectHeight);
-}
+ 

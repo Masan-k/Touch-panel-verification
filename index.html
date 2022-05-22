@@ -11,6 +11,8 @@
     <script type="text/javascript" src="01_swipe.js"></script>
     <script type="text/javascript" src="02_swipe.js"></script>
     <script type="text/javascript" src="02_pinch.js"></script>
+    <script type="text/javascript" src="03_pinch.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
 
 </head>
   <body>
@@ -44,8 +46,15 @@
         <li> キャンバス上のタッチイベントで画像のサイズを変更</li>
         <li> スワイプ操作(移動）なし</li>
       </ul>
-    <h2>実装3.キャンバスに描画した図形の拡大・縮小</h2>
-    <a href="03_pinch.html">動作確認画面</a><br>実装1,2と変数・関数名が重複してしまいそうなので別画面化</p>
+    <h2>実装3,,.キャンバスに描画した図形の拡大・縮小</h2>
+    <button type="button" onclick="resetButton()">RESET</button>
+    <br>
+    <canvas id="pinch03Canvas" width="640" height="480"></canvas>
+    <h3>操作</h3>
+    <ul>
+      <li>ピンチインで拡大、ピンチアウトで縮小</li>
+      <li>スワイプで移動</li>
+    </ul>
 
     <h2>99.参考サイト</h2>
     <ul>
