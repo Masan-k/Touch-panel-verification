@@ -1,5 +1,5 @@
 # touchTest
-https://masan-k.github.io/touchTest/
+https://masan-k.github.io/Touch-panel-verification/
 
 ## やりたいこと
 スマホで背景画像のみ縮小・拡大し、背景画像以外は拡大縮小させない。
